@@ -1,24 +1,42 @@
 import logo from './logo.svg';
 import './App.css';
+import nav from './components/Nav';
+import { use } from 'react';
 
 function App() {
+  const [cart, setCart] = useState([]);
+  
+  function addToCart(book) {
+    setCart([...cart, book]);
+  }
+
+  function changeQuantity(book, quantity) {
+    setCart(
+       cart.map((item) => 
+     item.id === book.id 
+     ? { 
+        ...item,
+        quantity: +quantity,
+     : item
+     )
+    );
+  }
+
+
+  useEffect(() => {
+    console.log(cart);
+  }, []);
+
+
   return (
+    <router>
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Nav />
+      <Route path="/" component={Home} />
+      <Route path="/books" render={() => <Books books={books} cart={cart} changeQuantity={changeQuantity} />} />
+      <footer />
     </div>
+    </router>
   );
 }
 
